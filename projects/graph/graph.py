@@ -100,9 +100,8 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        # create an empty queue, and enqueue a PATH to the starting vertex
+        # create an empty queue, and enqueue a PATH with the starting vertex
         path_queue = Queue()
-        # queue.enqueue([starting_vertex])
         path_queue.enqueue([starting_vertex])
         # create a set for visited vertices
         visited_vertices = set()
@@ -130,17 +129,41 @@ class Graph:
                         # add the new path to the queue
                         path_queue.enqueue(new_path)
 
-        pass  # TODO
-
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
         """
-
         # stack rather than a queue
-        pass  # TODO
+        # create an empty stack, and push a PATH with the starting vertex
+        path_stack = Stack()
+        path_stack.push([starting_vertex])
+        # create a set for visited vertices
+        visited_vertices = set()
+        # while the stack is not empty
+        while path_stack.size() > 0:
+            # pop the first PATH
+            current_path = path_stack.pop()
+            # grab the last vertex in the PATH
+            current_vertex = current_path[-1]
+            # if it hasn't been visited
+            if current_vertex not in visited_vertices:
+                # check if it's the target
+                if current_vertex == destination_vertex:
+                    # return the path
+                    return current_path
+                # mark it as visited
+                visited_vertices.add(current_vertex)
+                # make new versions of the current path, with each neighbor added to them
+                for neighbor in self.get_neighbors(current_vertex):
+                    if neighbor not in visited_vertices:
+                        # duplicate the path
+                        new_path = current_path.copy()
+                        # add the neighbor
+                        new_path.append(neighbor)
+                        # add the new path to the stack
+                        path_stack.push(new_path)
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
