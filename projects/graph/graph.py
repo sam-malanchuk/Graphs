@@ -85,14 +85,23 @@ class Graph:
                     if neighbor not in visited_vertices:
                         plan_to_visit.push(neighbor)
 
-    def dft_recursive(self, starting_vertex):
+    def dft_recursive(self, starting_vertex, visited_vertices=[]):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
 
         This should be done using recursion.
         """
-        pass  # TODO
+        visited_vertices.append(starting_vertex)
+        print(starting_vertex)
+        for neighbor in self.get_neighbors(starting_vertex):
+            if neighbor not in visited_vertices:
+                self.dft_recursive(neighbor)
+
+    # Understand: Get a starting vertex from and go through all the existing
+    # vertices only printing each one once. 
+    # Plan: Print the current vertex and run the function on all it's neighbors
+    # if the vertice has not been visited yet.
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -173,7 +182,7 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass  # TODO
+
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
