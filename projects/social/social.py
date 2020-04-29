@@ -1,5 +1,18 @@
 from random import shuffle
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -70,7 +83,6 @@ class SocialGraph:
                 # pop off the first item in the relationship list
                 curr_rel = rel_list.pop()
                 # if the friend already has 4 friends
-                print(f'Friends amounts: {len(self.friendships[curr_rel[0]])} and {len(self.friendships[curr_rel[1]])}')
                 if len(self.friendships[curr_rel[0]]) < 4 and len(self.friendships[curr_rel[1]]) < 4:
                     # as long as the item friend ID is not larger than his friend
                     if curr_rel[0] > curr_rel[1]:
@@ -79,7 +91,14 @@ class SocialGraph:
                         # set the added boolean to true 
                         added = True
 
-        print(f'this my rel_list: {rel_list}')
+    def get_neighbors(self, user_id):
+        # if the user exists in the social network
+        if user_id in self.friendships:
+            # get the list of friends of this user
+            return self.friendships[user_id]
+        # if user does not exist, give error
+        else:
+            raise IndexError("That user does not exist!")
 
     def get_all_social_paths(self, user_id):
         """
@@ -90,14 +109,43 @@ class SocialGraph:
 
         The key is the friend's ID and the value is the path.
         """
-        visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        # create a dictionary to store the relationships and paths
+        visited = {}
+        # create a queue to keep track of the user's I need to check
+        to_visit = Queue()
+        # add the start user to the queue as a list
+        to_visit.enqueue([user_id])
+
+        # while the to_visit queue is not empty
+        while to_visit.size() > 0:
+            # dequeue the first path from queue
+            curr_path = to_visit.dequeue()
+            # grab the last item in the path provided
+            curr_user = curr_path[-1]
+            # if the user has not been visited yet
+            if curr_user not in visited:
+                # add the user to the visited
+                visited[curr_user] = curr_path
+                # get the users related to the current user
+                for neightbor in self.get_neighbors(curr_user):
+                    # create a new path
+                    new_path = curr_path.copy()
+                    # add the current neighbor to new path
+                    new_path.append(neightbor)
+                    # add the new path with the new neighbor to queue
+                    to_visit.enqueue(new_path)
+
         return visited
 
 """
 populate_graph()
 Understand: take in an integer as the amount of users and another one as the average amount of relationships.
 Add a user for the amount of users requested. Create a list of all possible relationships. Add the relationships
+
+get_all_social_paths()
+Understand: given a user ID, return a dictionary containing all the extended relationships and their shortest path
+Plan: BFS; Create a queue and enqueue the current user. Go through all the relationships adding
+each to the queue and adding it and it's shortest path to the returned dictionary. 
 
 """
 
