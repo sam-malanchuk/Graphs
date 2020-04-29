@@ -50,16 +50,34 @@ class SocialGraph:
         rel_list = []
 
         # Add users: for the total number of users needed
-        for x in range(1, num_users):
+        for x in range(1, num_users+1):
             # create a user with the name of it's request index
             self.add_user(x)
             # Create friendships: for every x, y in total of users created, generate all the possible sets
-            for y in range(num_users):
+            for y in range(1, num_users+1):
                 # add the possible relationship to the list
                 rel_list.append((x, y))
 
         # shuffle the list of relationship possibilities
         shuffle(rel_list)
+
+        # for every item to have an avg_friendships amount go over range
+        for i in range(round((num_users * avg_friendships) / 2)):
+            # create a variable to keep track if it added
+            added = False
+            # if I haven't confirmed the add, repeat
+            while added is not True:
+                # pop off the first item in the relationship list
+                curr_rel = rel_list.pop()
+                # if the friend already has 4 friends
+                print(f'Friends amounts: {len(self.friendships[curr_rel[0]])} and {len(self.friendships[curr_rel[1]])}')
+                if len(self.friendships[curr_rel[0]]) < 4 and len(self.friendships[curr_rel[1]]) < 4:
+                    # as long as the item friend ID is not larger than his friend
+                    if curr_rel[0] > curr_rel[1]:
+                        # add the relationship
+                        self.add_friendship(curr_rel[0], curr_rel[1])
+                        # set the added boolean to true 
+                        added = True
 
         print(f'this my rel_list: {rel_list}')
 
