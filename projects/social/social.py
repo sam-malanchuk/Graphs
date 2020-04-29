@@ -1,3 +1,5 @@
+from random import shuffle
+
 class User:
     def __init__(self, name):
         self.name = name
@@ -44,9 +46,22 @@ class SocialGraph:
         self.friendships = {}
         # !!!! IMPLEMENT ME
 
-        # Add users
+        # create a list to hold all possible relationships
+        rel_list = []
 
-        # Create friendships
+        # Add users: for the total number of users needed
+        for x in range(1, num_users):
+            # create a user with the name of it's request index
+            self.add_user(x)
+            # Create friendships: for every x, y in total of users created, generate all the possible sets
+            for y in range(num_users):
+                # add the possible relationship to the list
+                rel_list.append((x, y))
+
+        # shuffle the list of relationship possibilities
+        shuffle(rel_list)
+
+        print(f'this my rel_list: {rel_list}')
 
     def get_all_social_paths(self, user_id):
         """
@@ -61,6 +76,12 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
         return visited
 
+"""
+populate_graph()
+Understand: take in an integer as the amount of users and another one as the average amount of relationships.
+Add a user for the amount of users requested. Create a list of all possible relationships. Add the relationships
+
+"""
 
 if __name__ == '__main__':
     sg = SocialGraph()
