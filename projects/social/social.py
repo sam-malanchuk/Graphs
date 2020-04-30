@@ -75,7 +75,7 @@ class SocialGraph:
         shuffle(rel_list)
 
         # for every item to have an avg_friendships amount go over range
-        for i in range(round((num_users * avg_friendships) / 2)):
+        for i in range((num_users * avg_friendships) // 2):
             # create a variable to keep track if it added
             added = False
             # if I haven't confirmed the add, repeat
