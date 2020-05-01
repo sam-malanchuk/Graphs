@@ -82,8 +82,8 @@ class SocialGraph:
             while added is not True:
                 # pop off the first item in the relationship list
                 curr_rel = rel_list.pop()
-                # if the friend already has 4 friends
-                if len(self.friendships[curr_rel[0]]) < 4 and len(self.friendships[curr_rel[1]]) < 4:
+                # if the user has 2 more friends than average
+                if len(self.friendships[curr_rel[0]]) < (avg_friendships + 2) and len(self.friendships[curr_rel[1]]) < (avg_friendships + 2):
                     # as long as the item friend ID is not larger than his friend
                     if curr_rel[0] > curr_rel[1]:
                         # add the relationship
